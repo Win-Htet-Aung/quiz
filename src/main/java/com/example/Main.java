@@ -15,7 +15,8 @@ public class Main {
     public static void showMenu() {
         optionMap = new HashMap<>();
         int i = 1;
-        System.out.println("       Quiz System");
+        System.out.println("=======================");
+        System.out.println("|     Quiz System     |");
         System.out.println("=======================");
         System.out.println(String.format("%d. Show quizzes", i));
         optionMap.put(i, OptionsEnum.SHOWQUIZZES);
