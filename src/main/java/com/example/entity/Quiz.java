@@ -16,7 +16,7 @@ public class Quiz {
     @Column(name = "title")
     private String title;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
         name = "quiz_question",
         joinColumns = {@JoinColumn(name = "quiz_id")},

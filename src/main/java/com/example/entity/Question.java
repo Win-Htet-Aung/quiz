@@ -28,7 +28,7 @@ public class Question {
     @Column(name = "answer")
     private String answer;
 
-    @ManyToMany(mappedBy = "questions")
+    @ManyToMany(mappedBy = "questions", fetch = FetchType.EAGER)
     private Set<Quiz> quizzes = new HashSet<>();
 
     public Question() {}
