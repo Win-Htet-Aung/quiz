@@ -1,5 +1,6 @@
 package com.example.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.entity.Question;
@@ -17,15 +18,19 @@ public class QuizService {
         if (response.equals("y")) {
             // show question ids
             QuestionService.ShowQuestions(ctx);
-            System.out.print("\nSelect question id(s) : ");
+            System.out.print("\nSelect question id(s) ending with '-1' : ");
             
             // let the user to select
-            Long qid = ctx.getSc().nextLong();
-            
-            // add the selected questions to the quiz
-            Question question = QuestionService.GetQuestionById(ctx, qid);
-            quiz.getQuestions().add(question);
-            question.getQuizzes().add(quiz);
+            Long qid;
+            do {
+                qid = ctx.getSc().nextLong();
+                if (qid != -1) {
+                    // add the selected questions to the quiz
+                    Question question = QuestionService.GetQuestionById(ctx, qid);
+                    quiz.getQuestions().add(question);
+                    question.getQuizzes().add(quiz);
+                }
+            } while (qid != -1);
         }
         ctx.getQuizRepo().CreateQuiz(quiz);
     }
