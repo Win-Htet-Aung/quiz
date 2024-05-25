@@ -25,8 +25,14 @@ public class Main {
             System.out.println(String.format("%d. Create quiz", i));
             optionMap.put(i, OptionsEnum.CREATEQUIZ);
             i++;
+            System.out.println(String.format("%d. Update quiz", i));
+            optionMap.put(i, OptionsEnum.UPDATEQUIZ);
+            i++;
             System.out.println(String.format("%d. Create question", i));
             optionMap.put(i, OptionsEnum.CREATEQUESTION);
+            i++;
+            System.out.println(String.format("%d. Update question", i));
+            optionMap.put(i, OptionsEnum.UPDATEQUESTION);
             i++;
         }
         if (ctx.getUser() == null) {
@@ -59,8 +65,14 @@ public class Main {
                 case CREATEQUIZ:
                     QuizService.CreateQuiz(ctx);
                     break;
+                case UPDATEQUIZ:
+                    QuizService.UpdateQuiz(ctx);
+                    break;
                 case CREATEQUESTION:
                     QuestionService.CreateQuestion(ctx);
+                    break;
+                case UPDATEQUESTION:
+                    QuestionService.UpdateQuestion(ctx);
                     break;
                 case LOGIN:
                     UserService.Login(ctx);

@@ -36,4 +36,27 @@ public class QuestionRepository extends Repository {
         session.close();
         return question;
     }
+
+    public void UpdateQuestion(Question question) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+        session.merge(question);
+        transaction.commit();
+        session.close();
+    }
+
+    public List<Question> GetQuestionsByIds(List<Long> qids, boolean included) {
+        Session session = sessionFactory.openSession();
+        Query<Question> q;
+        if (included) {
+            q = session.createQuery("select q from Question q where id in (:ids)", Question.class);
+        } else {
+            q = session.createQuery("select q from Question q where id not in (:ids)", Question.class);
+        }
+        q.setParameter("ids", qids);
+        List<Question> result = q.getResultList();
+        session.close();
+        return result;
+    }
 }

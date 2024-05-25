@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import com.example.entity.Question;
 import com.example.entity.Quiz;
 
 public class QuizRepository extends Repository {
@@ -25,5 +26,24 @@ public class QuizRepository extends Repository {
         session.persist(quiz);
         transaction.commit();
         session.close();
+    }
+
+    public void UpdateQuiz(Quiz quiz) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+        session.merge(quiz);
+        transaction.commit();
+        session.close();
+    }
+
+    public Quiz GetQuizById(Long qid) {
+        Quiz quiz = null;
+        Session session = sessionFactory.openSession();
+        Query<Quiz> q = session.createQuery("select q from Quiz q where q.id = :qid", Quiz.class);
+        q.setParameter("qid", qid);
+        quiz = q.getSingleResult();
+        session.close();
+        return quiz;
     }
 }

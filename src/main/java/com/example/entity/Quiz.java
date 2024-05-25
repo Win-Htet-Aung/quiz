@@ -55,6 +55,6 @@ public class Quiz {
     }
 
     public String toString() {
-        return this.title;
+        return String.format("%d : %s", this.id, this.title);
     }
 }
