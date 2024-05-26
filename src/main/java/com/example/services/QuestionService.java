@@ -60,6 +60,7 @@ public class QuestionService {
         System.out.println("1. Edit question");
         System.out.println("2. Add to Quizzes");
         System.out.println("3. Remove from Quizzes");
+        System.out.println("4. Delete");
     }
 
     public static Question GetQuestionById(Context ctx, Long qid) {
@@ -191,10 +192,24 @@ public class QuestionService {
             case 3:
                 RemoveFromQuizzes(ctx, question);
                 break;
+            case 4:
+                DeleteQuestion(ctx, question);
+                break;
             default:
                 break;
         }
     }
 
-   
+    public static void DeleteQuestion(Context ctx, Question question) {
+        List<Quiz> quizzes = new ArrayList<>();
+        for (Quiz q : question.getQuizzes()) {
+            quizzes.add(q);
+        }
+        question.getQuizzes().clear();
+        for (Quiz quiz : quizzes) {
+            quiz.getQuestions().removeIf(q -> q.getId() == question.getId());
+            ctx.getQuizRepo().UpdateQuiz(quiz);
+        }
+        ctx.getQuestionRepo().DeleteQuestion(question);
+    }
 }

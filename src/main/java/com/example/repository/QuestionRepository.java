@@ -46,6 +46,15 @@ public class QuestionRepository extends Repository {
         session.close();
     }
 
+    public void DeleteQuestion(Question question) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+        session.remove(question);
+        transaction.commit();
+        session.close();
+    }
+
     public List<Question> GetQuestionsByIds(List<Long> qids, boolean included) {
         Session session = sessionFactory.openSession();
         Query<Question> q;

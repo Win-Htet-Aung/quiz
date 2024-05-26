@@ -61,6 +61,7 @@ public class Main {
             switch (opt) {
                 case SHOWQUIZZES:
                     QuizService.ShowQuizzes(ctx, null, false);
+                    QuizService.TakeQuiz(ctx);
                     break;
                 case CREATEQUIZ:
                     QuizService.CreateQuiz(ctx);

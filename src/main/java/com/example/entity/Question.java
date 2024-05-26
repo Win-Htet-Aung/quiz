@@ -1,6 +1,10 @@
 package com.example.entity;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.*;
@@ -95,5 +99,25 @@ public class Question {
 
     public void setQuizzes(Set<Quiz> quizzes) {
         this.quizzes = quizzes;
+    }
+
+    public HashMap<String, String> display(int i) {
+        System.out.println(String.format("%d. %s", i, question));
+        List<String> choices = new ArrayList<>();
+        choices.add(answer);
+        choices.add(choice1);
+        choices.add(choice2);
+        choices.add(choice3);
+        Collections.shuffle(choices);
+        HashMap<String, String> choice_map = new HashMap<>();
+        String[] abcd = new String[]{"a", "b", "c", "d"};
+        int k = 0;
+        for (String choice : choices) {
+            System.out.println(String.format(" %s. %s", abcd[k], choice));
+            choice_map.put(abcd[k], choice);
+            k++;
+        }
+        System.out.print("Select an answer (a/b/c/d) : ");
+        return choice_map;
     }
 }

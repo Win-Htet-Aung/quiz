@@ -37,6 +37,15 @@ public class QuizRepository extends Repository {
         session.close();
     }
 
+    public void DeleteQuiz(Quiz quiz) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+        session.remove(quiz);
+        transaction.commit();
+        session.close();
+    }
+
     public Quiz GetQuizById(Long qid) {
         Quiz quiz = null;
         Session session = sessionFactory.openSession();
