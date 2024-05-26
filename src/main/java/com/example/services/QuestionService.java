@@ -13,7 +13,7 @@ public class QuestionService {
         System.out.print("Enter question : ");
         String question_text = ctx.getSc().nextLine();
         System.out.print("Answer : ");
-         String answer = ctx.getSc().nextLine();
+        String answer = ctx.getSc().nextLine();
 
         System.out.print("Choice 1 : ");
         String c1 = ctx.getSc().nextLine();
@@ -69,12 +69,6 @@ public class QuestionService {
         return ctx.getQuestionRepo().GetQuestionById(qid);
     }
 
-    public static void ShowQuestions(Context ctx) {
-        List<Question> questions = ctx.getQuestionRepo().GetAllQuestions();
-        for (Question q: questions) {
-            System.out.println(q);
-        }
-    }
 
     public static void ShowQuestions(Context ctx, Quiz quiz, boolean included) {
         List<Question> questions = null;
@@ -180,7 +174,7 @@ public class QuestionService {
         question.setChoice2(c2);
         question.setChoice3(c3);
 
-        ctx.getQuestionRepo().CreateQuestion(question);
+        ctx.getQuestionRepo().UpdateQuestion(question);;
     }
 
     public static void UpdateQuestion(Context ctx) {
