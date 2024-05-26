@@ -32,7 +32,7 @@ public class QuestionService {
 
         if (response.equals("y")) {
             // show quiz ids
-            QuizService.ShowQuizzes(ctx);
+            QuizService.ShowQuizzes(ctx, null, false);
             System.out.print("\nSelect quiz id(s) ending with '-1' : ");
             
             // let the user to select
@@ -45,7 +45,7 @@ public class QuestionService {
                     // add the question to the selected quizzes
                     quiz = QuizService.GetQuizById(ctx, qid);
                     quizzes.add(quiz);
-                    System.out.println("Adding quiz id : " + quiz.getId());
+                    System.out.println("Adding to quiz id : " + quiz.getId());
                     quiz.getQuestions().add(question);
                     question.getQuizzes().add(quiz);
                 }
@@ -57,13 +57,10 @@ public class QuestionService {
     }
 
     public static void UpdateQuestionShowMenu() {
-        System.out.println("1.Edit question");
+        System.out.println("1. Edit question");
         System.out.println("2. Add to Quizzes");
         System.out.println("3. Remove from Quizzes");
-
     }
-
-
 
     public static Question GetQuestionById(Context ctx, Long qid) {
         return ctx.getQuestionRepo().GetQuestionById(qid);
@@ -96,7 +93,7 @@ public class QuestionService {
         String q = ctx.getSc().nextLine();
         question.setQuestion(q);
         ctx.getQuestionRepo().UpdateQuestion(question);
-        UpdateChoice(question, ctx);
+        UpdateChoice(ctx, question);
     }
     
     public static void addToQuizzes(Context ctx, Question question) {
@@ -112,31 +109,26 @@ public class QuestionService {
                 Quiz quiz = QuizService.GetQuizById(ctx, quizzesid);
                 quiz.getQuestions().add(question);
                 question.getQuizzes().add(quiz);
+                ctx.getQuizRepo().UpdateQuiz(quiz);
             }
         } while (quizzesid != -1);
-        ctx.getQuestionRepo().UpdateQuestion(question);
     }
 
 
     public static void RemoveFromQuizzes(Context ctx, Question question){
         QuizService.ShowQuizzes(ctx, question, true);
         System.out.print("\nSelect quiz id(s) ending with '-1' : ");
-
         Long qid;
-
         do {
             qid = ctx.getSc().nextLong();
             if (qid != -1) {
                 // remove from quiz
                 Quiz quiz = QuizService.GetQuizById(ctx, qid);
-              
                 quiz.getQuestions().removeIf(q -> q.getId() == question.getId());
                 question.getQuizzes().removeIf(q -> q.getId() == quiz.getId());
+                ctx.getQuizRepo().UpdateQuiz(quiz);
             }
-        } while (qid != -1);
-      
-            ctx.getQuestionRepo().UpdateQuestion(question);
-        
+        } while (qid != -1);        
     }
 
     public static void RemoveQuestions(Context ctx, Quiz quiz) {
@@ -156,7 +148,7 @@ public class QuestionService {
         ctx.getQuizRepo().UpdateQuiz(quiz);
     }
   
-    public static void UpdateChoice(Question question, Context ctx){
+    public static void UpdateChoice(Context ctx, Question question){
         System.out.println("Enter answer : ");
         String ans = ctx.getSc().nextLine();
 
@@ -174,12 +166,13 @@ public class QuestionService {
         question.setChoice2(c2);
         question.setChoice3(c3);
 
-        ctx.getQuestionRepo().UpdateQuestion(question);;
+        ctx.getQuestionRepo().UpdateQuestion(question);
     }
 
     public static void UpdateQuestion(Context ctx) {
-        ShowQuestions(ctx);
-        System.out.print("\nSelect quiz id : ");
+        System.out.println();
+        ShowQuestions(ctx, null, false);
+        System.out.print("\nSelect question id : ");
         Long qid = ctx.getSc().nextLong();
         Question question = GetQuestionById(ctx, qid);
         // System.out.println("Editing quiz : " + quiz.getTitle());

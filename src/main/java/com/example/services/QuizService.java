@@ -38,7 +38,7 @@ public class QuizService {
     }
 
     public static void UpdateQuiz(Context ctx) {
-        ShowQuizzes(ctx);
+        ShowQuizzes(ctx, null, false);
         System.out.print("\nSelect quiz id : ");
         Long qid = ctx.getSc().nextLong();
         Quiz quiz = GetQuizById(ctx, qid);
@@ -59,10 +59,7 @@ public class QuizService {
             default:
                 break;
         }
-    }
-
-    
-   
+    }   
 
     public static void EditQuizTitle(Context ctx, Quiz quiz) {
         System.out.print("Enter new title : ");
@@ -110,13 +107,6 @@ public class QuizService {
 
     public static Quiz GetQuizById(Context ctx, Long qid) {
         return ctx.getQuizRepo().GetQuizById(qid);
-    }
-
-    public static void ShowQuizzes(Context ctx) {
-        List<Quiz> quizzes = ctx.getQuizRepo().GetAllQuizzes();
-        for (Quiz q: quizzes) {
-            System.out.println(q);
-        }
     }
 
     public static void UpdateQuizShowMenu() {

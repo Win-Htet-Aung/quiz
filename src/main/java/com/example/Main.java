@@ -60,7 +60,7 @@ public class Main {
             OptionsEnum opt = optionMap.get(option);
             switch (opt) {
                 case SHOWQUIZZES:
-                    QuizService.ShowQuizzes(ctx);
+                    QuizService.ShowQuizzes(ctx, null, false);
                     break;
                 case CREATEQUIZ:
                     QuizService.CreateQuiz(ctx);
