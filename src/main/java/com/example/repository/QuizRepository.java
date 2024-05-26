@@ -46,4 +46,18 @@ public class QuizRepository extends Repository {
         session.close();
         return quiz;
     }
+
+    public List<Quiz> GetQuizzesByIds(List<Long> qids, boolean included) {
+        Session session = sessionFactory.openSession();
+        Query<Quiz> q;
+        if (included) {
+            q = session.createQuery("select q from Quiz q where id in (:ids)", Quiz.class);
+        } else {
+            q = session.createQuery("select q from Quiz q where id not in (:ids)", Quiz.class);
+        }
+        q.setParameter("ids", qids);
+        List<Quiz> result = q.getResultList();
+        session.close();
+        return result;
+    }
 }
