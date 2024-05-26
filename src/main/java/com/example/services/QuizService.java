@@ -1,8 +1,9 @@
 package com.example.services;
 
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
 
 import com.example.entity.Question;
 import com.example.entity.Quiz;
@@ -60,6 +61,9 @@ public class QuizService {
         }
     }
 
+    
+   
+
     public static void EditQuizTitle(Context ctx, Quiz quiz) {
         System.out.print("Enter new title : ");
         ctx.getSc().nextLine();
@@ -85,6 +89,7 @@ public class QuizService {
         } while (qid != -1);
         ctx.getQuizRepo().UpdateQuiz(quiz);
     }
+
 
     public static void RemoveQuestions(Context ctx, Quiz quiz) {
         System.out.println();
@@ -118,5 +123,25 @@ public class QuizService {
         System.out.println(String.format("1. Edit quiz title"));
         System.out.println(String.format("2. Add questions"));
         System.out.println(String.format("3. Remove questions"));
+    }
+
+     public static void ShowQuizzes(Context ctx, Question question, boolean included) {
+        List<Quiz> quizzes = null;
+        if (question == null) {
+            quizzes = ctx.getQuizRepo().GetAllQuizzes();
+        } else {
+            if (included) {
+                quizzes = new ArrayList<Quiz>(question.getQuizzes());
+            } else {
+                List<Long> quizids = new ArrayList<>();
+                for (Quiz q: question.getQuizzes()) {
+                    quizids.add(q.getId());
+                }
+                quizzes = ctx.getQuizRepo().GetQuizzesByIds(quizids, included);
+            }
+        }
+        for (Quiz q: quizzes) {
+            System.out.println(String.format("%d  %s", q.getId(), q.getTitle()));
+        }
     }
 }
