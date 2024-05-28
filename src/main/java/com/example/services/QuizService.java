@@ -9,6 +9,7 @@ import java.util.Set;
 import com.example.entity.Attempt;
 import com.example.entity.Question;
 import com.example.entity.Quiz;
+import com.example.entity.ScoreHistory;
 import com.example.utils.Context;
 
 public class QuizService {
@@ -137,7 +138,12 @@ public class QuizService {
             }
         }
         for (Quiz q: quizzes) {
-            System.out.println(String.format("%d  %s", q.getId(), q.getTitle()));
+            int score = AttemptService.GetHighestScore(ctx, q);
+            if (score == -1) {
+                System.out.println(String.format("%d  %s", q.getId(), q.getTitle()));
+            } else {
+                System.out.println(String.format("%d  %-40s %d", q.getId(), q.getTitle(), score));
+            }
         }
     }
 
@@ -149,6 +155,14 @@ public class QuizService {
         quiz.getQuestions().clear();
         for (Question question : questions) {
             question.getQuizzes().removeIf(q -> q.getId() == quiz.getId());
+        }
+        List<Attempt> attempts = ctx.getAttemptRepo().GetAttemptsByQuiz(null, quiz);
+        for (Attempt attempt : attempts) {
+            List<ScoreHistory> score_histories = ctx.getScorehistoryRepo().GetScoreHistoryByAttempt(attempt);
+            for (ScoreHistory score_history : score_histories) {
+                ctx.getScorehistoryRepo().DeleteScoreHistory(score_history);
+            }
+            ctx.getAttemptRepo().DeleteAttempt(attempt);
         }
         ctx.getQuizRepo().DeleteQuiz(quiz);
     }

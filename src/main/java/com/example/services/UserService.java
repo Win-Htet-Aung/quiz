@@ -1,7 +1,11 @@
 package com.example.services;
 
+import java.util.List;
+
 import org.hibernate.exception.ConstraintViolationException;
 
+import com.example.entity.Attempt;
+import com.example.entity.Quiz;
 import com.example.entity.User;
 import com.example.utils.Context;
 
@@ -43,5 +47,20 @@ public class UserService {
     public static void Logout(Context ctx) {
         System.out.println("Logging you out!");
         ctx.setUser(null);
+    }
+
+    public static void ScoreHistory(Context ctx) {
+        QuizService.ShowQuizzes(ctx, null, false);
+        System.out.print("\nSelect a quiz id : ");
+        Long qid = ctx.getSc().nextLong();
+        Quiz quiz = QuizService.GetQuizById(ctx, qid);
+        List<Attempt> attempts = ctx.getAttemptRepo().GetAttemptsByQuiz(ctx.getUser(), quiz);
+        System.out.println("\nAttempt ID              Score");
+        for (Attempt attempt : attempts) {
+            System.out.println(String.format("  %-5d%20d  ", attempt.getId(), attempt.getScore()));
+        }
+        System.out.println("\nPress Enter to continue!");
+        ctx.getSc().nextLine();
+        ctx.getSc().nextLine();
     }
 }

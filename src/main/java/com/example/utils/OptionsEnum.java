@@ -6,6 +6,7 @@ public enum OptionsEnum {
     CREATEQUESTION,
     UPDATEQUESTION,
     SHOWQUIZZES,
+    SCOREHISTORY,
     LOGIN,
     LOGOUT,
     SIGNUP,

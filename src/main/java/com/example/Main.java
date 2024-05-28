@@ -43,6 +43,9 @@ public class Main {
             optionMap.put(i, OptionsEnum.SIGNUP);
             i++;
         } else {
+            System.out.println(String.format("%d. Score history", i));
+            optionMap.put(i, OptionsEnum.SCOREHISTORY);
+            i++;
             System.out.println(String.format("%d. Log out", i));
             optionMap.put(i, OptionsEnum.LOGOUT);
             i++;
@@ -83,6 +86,9 @@ public class Main {
                     break;
                 case LOGOUT:
                     UserService.Logout(ctx);
+                    break;
+                case SCOREHISTORY:
+                    UserService.ScoreHistory(ctx);
                     break;
                 case EXIT:
                     System.out.println("\nGood Bye!");

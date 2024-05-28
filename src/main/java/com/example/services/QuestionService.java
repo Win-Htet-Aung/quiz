@@ -3,8 +3,10 @@ package com.example.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.entity.Attempt;
 import com.example.entity.Question;
 import com.example.entity.Quiz;
+import com.example.entity.ScoreHistory;
 import com.example.utils.Context;
 
 public class QuestionService {
@@ -209,6 +211,16 @@ public class QuestionService {
         for (Quiz quiz : quizzes) {
             quiz.getQuestions().removeIf(q -> q.getId() == question.getId());
             ctx.getQuizRepo().UpdateQuiz(quiz);
+        }
+        List<ScoreHistory> score_histories = ctx.getScorehistoryRepo().GetScoreHistoryByQuestion(question);
+        for (ScoreHistory score_history : score_histories) {
+            int score = score_history.getScore();
+            if (score == 1) {
+                Attempt attempt = score_history.getAttempt_question().getAttempt();
+                attempt.setScore(attempt.getScore() - 1);
+                ctx.getAttemptRepo().UpdateAttempt(attempt);
+            }
+            ctx.getScorehistoryRepo().DeleteScoreHistory(score_history);
         }
         ctx.getQuestionRepo().DeleteQuestion(question);
     }
